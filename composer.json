@@ -1,0 +1,11 @@
+{
+    "require": {
+        "symfony/cache": "^5.3",
+        "doctrine/orm": "^2.10"
+    },
+    "autoload": {
+        "psr-4": {
+            "MVC\\Courses\\": "src/"
+        }
+    }
+}
