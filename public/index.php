@@ -1,31 +1,18 @@
 <?php
 
+use MVC\Courses\Controller\InterfaceControllerRequest;
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use MVC\Courses\Controller\InsertIntoForm;
-use MVC\Courses\Controller\ListCourses;
-use MVC\Courses\Controller\Persistence;
+$path = $_SERVER['PATH_INFO'];
+$routes = require __DIR__ . '/../config/routes.php';
 
-switch($_SERVER['PATH_INFO']){
-    case '/courses-list': {
-        $controller = new ListCourses();
-        $controller->processRequest();
-        break;
-    }
-
-    case '/new-course': {
-        $controller = new InsertIntoForm();
-        $controller->processRequest();
-        break;
-    }
-
-    case '/save-course': {
-        $controller = new Persistence();
-        $controller->processRequest();
-        break;
-    }
-
-    default: {
-        echo "Error 404";
-    }
+if(!array_key_exists($path, $routes)){
+    http_response_code(404);
+    exit();
 }
+
+$classController = $routes[$path];
+/** @var InterfaceControllerRequest $controller */
+$controller = new $classController();
+$controller->processRequest();
