@@ -5,7 +5,7 @@ namespace MVC\Courses\Controller;
 use MVC\Courses\Entity\Course;
 use MVC\Courses\Infra\EntityManagerCreator;
 
-class ListCourses implements InterfaceControllerRequest
+class ListCourses extends ControllerWithHTML implements InterfaceControllerRequest
 {
     private $courseRepository;
     public function __construct()
@@ -15,8 +15,9 @@ class ListCourses implements InterfaceControllerRequest
     }
     public function processRequest(): void
     {
-        $courses = $this->courseRepository->findAll();
-        $title = 'List Courses';
-        require __DIR__ . '/../../view/courses/list-courses.php';
+        echo $this->renderHTML('courses/list-courses.php', [
+            'courses' => $this->courseRepository->findAll(),
+            'title' => 'List Courses'
+        ]);
     }
 }
