@@ -20,8 +20,19 @@ class Persistence implements InterfaceControllerRequest
         $course = new Course();
         $course->setDescription($description);
 
-        $this->entityManager->persist($course);
-        $this->entityManager->flush();   
+        $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
+        
+        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+
+        if(!is_null($id) && $id !== false){
+            $course = $this->entityManager->find(Course::class, $id);
+            $course->setDescription($description);
+        } else {
+            $course = new Course();
+            $course->setDescription($description);
+            $this->entityManager->persist($course);
+        }
+        $this->entityManager->flush();
 
         header('Location: /courses-list', true, 302);
     }
