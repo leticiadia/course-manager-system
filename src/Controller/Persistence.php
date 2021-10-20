@@ -15,10 +15,14 @@ class Persistence implements InterfaceControllerRequest
     }
     public function processRequest(): void
     {
+        $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
+
         $course = new Course();
-        $course->setDescription($_POST['description']);
+        $course->setDescription($description);
 
         $this->entityManager->persist($course);
         $this->entityManager->flush();   
+
+        header('Location: /courses-list', true, 302);
     }
 }
