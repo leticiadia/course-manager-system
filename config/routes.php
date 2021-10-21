@@ -1,6 +1,6 @@
 <?php
 
-use MVC\Courses\Controller\{Delete, EditForm, InsertIntoForm, ListCourses, LoginForm, Persistence, StartLogin};
+use MVC\Courses\Controller\{Delete, EditForm, InsertIntoForm, ListCourses, LoginForm, Logout, Persistence, StartLogin};
 
 return [
     '/courses-list' => ListCourses::class,
@@ -9,5 +9,6 @@ return [
     '/delete-course' => Delete::class,
     '/change-course' => EditForm::class,
     '/login' => LoginForm::class,
-    '/start-login' => StartLogin::class
+    '/start-login' => StartLogin::class,
+    '/logout' => Logout::class
 ];
