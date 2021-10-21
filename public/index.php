@@ -12,6 +12,14 @@ if(!array_key_exists($path, $routes)){
     exit();
 }
 
+session_start();
+
+$loginRoute = stripos($path, 'login');
+if(!isset($_SESSION['logged']) && $loginRoute === false){
+    header('Location: /login');
+    return;
+}
+
 $classController = $routes[$path];
 /** @var InterfaceControllerRequest $controller */
 $controller = new $classController();
