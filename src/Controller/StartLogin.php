@@ -3,10 +3,12 @@
 namespace MVC\Courses\Controller;
 
 use MVC\Courses\Entity\User;
+use MVC\Courses\Helper\FlashMessageTrait;
 use MVC\Courses\Infra\EntityManagerCreator;
 
 class StartLogin implements InterfaceControllerRequest
 {
+    use FlashMessageTrait;
 
     private $usersRepository;
     public function __construct()
@@ -15,13 +17,13 @@ class StartLogin implements InterfaceControllerRequest
         $this->usersRepository = $entityManager->getRepository(User::class);
     }
 
-
     public function processRequest(): void
     {
         $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
 
         if(is_null($email) || $email === false){
-            echo 'The email you entered is not a valid email address.';
+            $this->defineMessage('danger', 'The email you entered is not a valid email address');
+            header('Location: /login');
             return;
         }
 
@@ -31,9 +33,12 @@ class StartLogin implements InterfaceControllerRequest
         $user = $this->usersRepository->findOneBy(['email' => $email]);
 
         if(is_null($user) || !$user->passwordIsCorrect($password)){
-            echo 'E-mail and password invalid';
+            $this->defineMessage('danger', 'Email or password invalid');
+            header('Location: /login');
             return;
         }
+
+        $_SESSION['logged'] = true;
 
         header('Location: /courses-list');
     }

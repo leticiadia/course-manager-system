@@ -3,10 +3,13 @@
 namespace MVC\Courses\Controller;
 
 use MVC\Courses\Entity\Course;
+use MVC\Courses\Helper\FlashMessageTrait;
 use MVC\Courses\Infra\EntityManagerCreator;
 
 class Persistence implements InterfaceControllerRequest
 {
+    use FlashMessageTrait;
+
     private $entityManager;
 
     public function __construct()
@@ -27,10 +30,12 @@ class Persistence implements InterfaceControllerRequest
         if(!is_null($id) && $id !== false){
             $course = $this->entityManager->find(Course::class, $id);
             $course->setDescription($description);
+            $this->defineMessage('success', 'Course updated successfully');
         } else {
             $course = new Course();
             $course->setDescription($description);
             $this->entityManager->persist($course);
+            $this->defineMessage('success', 'Course insert successfully');
         }
         $this->entityManager->flush();
 
