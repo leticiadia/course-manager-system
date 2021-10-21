@@ -3,11 +3,15 @@
 namespace MVC\Courses\Controller;
 
 use MVC\Courses\Entity\Course;
+use MVC\Courses\Helper\RenderHTMLTrait;
 use MVC\Courses\Infra\EntityManagerCreator;
 
-class ListCourses extends ControllerWithHTML implements InterfaceControllerRequest
+class ListCourses implements InterfaceControllerRequest
 {
+    use RenderHTMLTrait;
+
     private $courseRepository;
+    
     public function __construct()
     {
         $entityManager = (new EntityManagerCreator())->getEntityManager();

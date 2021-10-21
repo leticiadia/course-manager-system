@@ -2,8 +2,12 @@
 
 namespace MVC\Courses\Controller;
 
-class LoginForm extends ControllerWithHTML implements InterfaceControllerRequest
+use MVC\Courses\Helper\RenderHTMLTrait;
+
+class LoginForm implements InterfaceControllerRequest
 {
+    use RenderHTMLTrait;
+    
     public function processRequest(): void
     {
         echo $this->renderHTML('login/form.php', [

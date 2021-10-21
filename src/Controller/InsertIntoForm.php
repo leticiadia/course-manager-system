@@ -2,8 +2,12 @@
 
 namespace MVC\Courses\Controller;
 
-class InsertIntoForm extends ControllerWithHTML implements InterfaceControllerRequest
+use MVC\Courses\Helper\RenderHTMLTrait;
+
+class InsertIntoForm implements InterfaceControllerRequest
 {
+    use RenderHTMLTrait;
+    
     public function processRequest(): void
     {
         echo $this->renderHTML('courses/form.php', [

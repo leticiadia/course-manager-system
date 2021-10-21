@@ -3,10 +3,13 @@
 namespace MVC\Courses\Controller;
 
 use MVC\Courses\Entity\Course;
+use MVC\Courses\Helper\RenderHTMLTrait;
 use MVC\Courses\Infra\EntityManagerCreator;
 
-class EditForm  extends ControllerWithHTML implements InterfaceControllerRequest
+class EditForm implements InterfaceControllerRequest
 {
+    use RenderHTMLTrait;
+    
     private $courseRepository;
     
     public function __construct()
