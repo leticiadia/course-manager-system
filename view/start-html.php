@@ -8,7 +8,29 @@
 </head>
 
 <body>
+    <?php if (isset($_SESSION['logged'])) : ?>
+        <header>
+            <nav class="navbar navbar-dark bg-dark mb-2">
+                <a class="navbar-brand" href="/courses-list">Home</a>
+
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+    <?php endif;?>
     <div class="container">
         <div class="jumbotron">
             <h1><?= $title;?></h1>
         </div>
+
+        <?php if(isset($_SESSION['message'])): ?>
+            <div class="alert alert-<?= $_SESSION['type_message']; ?>">
+                <?= $_SESSION['message']; ?>
+            </div>
+        <?php 
+            unset($_SESSION['type_message']);
+            unset($_SESSION['message']);
+        endif; ?>
