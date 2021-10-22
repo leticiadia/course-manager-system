@@ -25,6 +25,7 @@ MVC is a very well known design pattern and used in most web projects. Speaking 
 - Nyholm
 - psr/http-server-handler
 - PHP-DI
+- Bootstrap
 
 ## ⚡ PSRs 
 <p>PSRs are recommendations of standards created by the PHP-FIG group for PHP.</p>
