@@ -2,29 +2,34 @@
 
 namespace MVC\Courses\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use MVC\Courses\Entity\User;
 use MVC\Courses\Helper\FlashMessageTrait;
-use MVC\Courses\Infra\EntityManagerCreator;
+use Nyholm\Psr7\Response;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class StartLogin implements InterfaceControllerRequest
+class StartLogin implements RequestHandlerInterface
 {
     use FlashMessageTrait;
 
     private $usersRepository;
-    public function __construct()
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $entityManager = (new EntityManagerCreator())->getEntityManager();
         $this->usersRepository = $entityManager->getRepository(User::class);
     }
 
-    public function processRequest(): void
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
 
         if(is_null($email) || $email === false){
             $this->defineMessage('danger', 'The email you entered is not a valid email address');
             header('Location: /login');
-            return;
+            exit();
         }
 
         $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
@@ -35,11 +40,11 @@ class StartLogin implements InterfaceControllerRequest
         if(is_null($user) || !$user->passwordIsCorrect($password)){
             $this->defineMessage('danger', 'Email or password invalid');
             header('Location: /login');
-            return;
+            exit();
         }
 
         $_SESSION['logged'] = true;
 
-        header('Location: /courses-list');
+        return new Response(200, ['Location' => '/courses-list']); 
     }
 }

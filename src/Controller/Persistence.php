@@ -2,21 +2,26 @@
 
 namespace MVC\Courses\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use MVC\Courses\Entity\Course;
 use MVC\Courses\Helper\FlashMessageTrait;
 use MVC\Courses\Infra\EntityManagerCreator;
+use Nyholm\Psr7\Response;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class Persistence implements InterfaceControllerRequest
+class Persistence implements RequestHandlerInterface
 {
     use FlashMessageTrait;
 
     private $entityManager;
 
-    public function __construct()
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->entityManager = (new EntityManagerCreator())->getEntityManager();
+        $this->entityManager = $entityManager;
     }
-    public function processRequest(): void
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
 
@@ -39,6 +44,6 @@ class Persistence implements InterfaceControllerRequest
         }
         $this->entityManager->flush();
 
-        header('Location: /courses-list', true, 302);
+        return new Response(302, ['Location' => '/courses-list']);
     }
 }
